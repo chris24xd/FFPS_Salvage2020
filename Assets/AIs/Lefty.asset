@@ -12,8 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b02f9a2fca8f3745b094e4a5308394e, type: 3}
   m_Name: Lefty
   m_EditorClassIdentifier: 
-  isSalvage: 1
   ai: 20
   name: Lefty
-  description: He be salvaged for a whopping 5000 points. Wind-up whirring should
+  description: He can be salvaged for a whopping 5000 points. Wind-up whirring should
     worry you.
