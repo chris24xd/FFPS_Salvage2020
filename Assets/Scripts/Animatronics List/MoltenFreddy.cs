@@ -1,1 +1,6 @@
-public class MoltenFreddy: SalvageAnimatronic {}
+using Salvage;
+
+namespace Animatronics_List
+{
+    public class MoltenFreddy: SalvageAnimatronic {}
+}

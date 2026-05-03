@@ -1,23 +1,21 @@
 using UnityEngine;
 
-public class Animatronic : MonoBehaviour
+namespace Animatronic_Basics
 {
-    public Animatronic_AI data;
-
-    protected int AI => data.ai;
-    public int points;
-
-    public virtual bool CanMove(int max = 20) => Random.Range(1, max + 1) <= AI;
-    public virtual bool CanJumpscare() => false;
-    public virtual void Jumpscare() {}
-
-    private void Awake()
+    public class Animatronic : MonoBehaviour
     {
-        points = 10 * AI;
-    }
-}
+        public Animatronic_AI data;
 
-public interface ITaseable
-{
-    public void Tase();
+        protected int AI => data.ai;
+        public int points;
+
+        public virtual bool CanMove(int max = 20) => Random.Range(1, max + 1) <= AI;
+        public virtual bool CanJumpscare() => false;
+        public virtual void Jumpscare() {}
+
+        private void Awake()
+        {
+            points = 10 * AI;
+        }
+    }
 }

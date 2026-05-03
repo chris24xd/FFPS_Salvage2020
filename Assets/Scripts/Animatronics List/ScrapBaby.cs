@@ -1,1 +1,6 @@
-public class ScrapBaby: SalvageAnimatronic {}
+using Salvage;
+
+namespace Animatronics_List
+{
+    public class ScrapBaby: SalvageAnimatronic {}
+}
