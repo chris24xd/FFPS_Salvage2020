@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace References
@@ -6,8 +7,31 @@ namespace References
     {
         public static PreReferencer Instance { get; private set; }
 
-        public AudioClip[] miscClips; // 0 = Jumpscare, 1 = Shock, 2 = Jumpscare Boom, 3 = Mark
+        public enum Sound
+        {
+            Jumpscare,
+            Shock,
+            JumpscareBoom,
+            Mark,
+            PaperPullUp,
+            PaperPullDown,
+            TapePlay,
+            TapePause,
+        }
+        
+        [SerializeField] private AudioClip[] miscClips;
         public Sprite defaultMark;
+
+        public AudioClip GetSound(Sound sound)
+        {
+            var index = (int)sound;
+            if (index < 0 || index >= miscClips.Length)
+            {
+                throw new IndexOutOfRangeException($"{sound} is out of range!");
+            }
+            
+            return miscClips[index];
+        }
     
         private void Awake() => Instance = this;
     }

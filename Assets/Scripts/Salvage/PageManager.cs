@@ -1,45 +1,76 @@
-﻿using UnityEngine;
+﻿using References;
+using UnityEngine;
 using UnityEngine.EventSystems;
+
+using static References.PreReferencer;
 
 namespace Salvage
 {
     public class PageManager: MonoBehaviour, IPointerEnterHandler
     {
-        private Vector3 vel;
+        private Vector3 _vel;
         [SerializeField] private UnityEngine.UI.Image page;
         [SerializeField] private Sprite[] sprites;
-        [SerializeField] private AudioClip[] sfx;
+
+        private enum PageState
+        {
+            Still,
+            Moving,
+        }
     
         public void OnPointerEnter(PointerEventData eventData)
         {
-            if (SalvageManager.Instance.isPageAnimating || SalvageManager.Instance.gameOver || SalvageManager.Instance.blackoutActive) return;
-            Toggle();
+            if (SalvageManager.Instance.isPageAnimating || SalvageManager.Instance.gameOver ||
+                SalvageManager.Instance.blackoutActive)
+            {
+                return;
+            }
+            
+            Pull();
+        }
+
+        private void Pull()
+        {
+            SalvageManager.Instance.isPageAnimating = true;
+        
+            ToggleMarks(false);
+            page.sprite = sprites[(int)PageState.Moving];
+            
+            var pageSound = SalvageManager.Instance.isPageViewed ? Sound.PaperPullDown : Sound.PaperPullUp;
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(pageSound), Camera.main.transform.position);
+            
+            SalvageManager.Instance.isPageViewed ^= true; //IMMEDIATELY SET IN ORDER FOR ANIMATRONIC TO UPDATE WHILE PAGE'S ANIMATING
+        }
+
+        private void ToggleMarks(bool toggle)
+        {
+            for(int c = 0; c < page.transform.childCount; c++)
+            {
+                page.transform.GetChild(c).gameObject.SetActive(toggle);
+            }
         }
 
         private void Update()
         {
             // BRING DOWN IN CASE AGGRESSION >= 1200 AND STILL VIEWING THE PAPER
-            if(SalvageManager.Instance.gameOver && SalvageManager.Instance.isPageViewed) Toggle();
+            if (SalvageManager.Instance.gameOver && SalvageManager.Instance.isPageViewed)
+            {
+                Pull();
+            }
         
-            // ANIMATE
             if (!SalvageManager.Instance.isPageAnimating) return;
-            var dest = new Vector2(0, SalvageManager.Instance.isPageViewed ? 0 : -1175);
-            page.transform.localPosition = Vector3.SmoothDamp(page.transform.localPosition,dest , ref vel , 0.05f, Mathf.Infinity);
+            
+            // ANIMATE
+            var destination = new Vector2(0, SalvageManager.Instance.isPageViewed ? 0 : -1175);
+            page.transform.localPosition = 
+                Vector3.SmoothDamp(page.transform.localPosition,destination , ref _vel , 0.05f, Mathf.Infinity);
 
-            if (Vector2.Distance(page.transform.localPosition, dest) >= 0.1f) return;
+            var reachedDestination = Vector2.Distance(page.transform.localPosition, destination) < 0.1f;
+            if (!reachedDestination) return;
+            
             SalvageManager.Instance.isPageAnimating = false;
-            for(int c = 0; c < page.transform.childCount; c++) page.transform.GetChild(c).gameObject.SetActive(true); // SHOW Xs ON CHECKBOXES
-            page.sprite = sprites[0];
-        }
-
-        private void Toggle()
-        {
-            SalvageManager.Instance.isPageAnimating = true;
-        
-            for(int c = 0; c < page.transform.childCount; c++) page.transform.GetChild(c).gameObject.SetActive(false); // HIDE Xs ON CHECKBOXES
-            page.sprite = sprites[1];
-            AudioSource.PlayClipAtPoint(sfx[SalvageManager.Instance.isPageViewed ? 1 : 0], Camera.main.transform.position);
-            SalvageManager.Instance.isPageViewed ^= true; //IMMEDIATELY SET IN ORDER FOR ANIMATRONIC TO UPDATE WHILE PAGE'S ANIMATING
+            ToggleMarks(true);
+            page.sprite = sprites[(int)PageState.Still];
         }
     }
 }

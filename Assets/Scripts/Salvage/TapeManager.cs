@@ -1,64 +1,91 @@
-﻿using System.Linq;
-using References;
+﻿using References;
 using UnityEngine;
+
+using static References.PreReferencer;
 
 namespace Salvage
 {
     public class TapeManager: MonoBehaviour
     {
-        private AudioSource player;
+        private const float MaxAfkTime = 10;
+
+        private enum TapeState
+        {
+            PressToUnpause,
+            PressToPause
+        }
+        
+        private AudioSource _audio;
         [SerializeField] AudioClip[] recordings;
-        [SerializeField] private AudioClip[] sfx;
         private UnityEngine.UI.Image indicator;
         [SerializeField] private Sprite[] sprites;
+        
+        private static bool MetChanceToIrritateAt4thTape => 
+            SalvageManager.Instance.currentRecording == 3 && RandomExtensions.Chance(50);
 
         private void Awake()
         {
-            player = GetComponent<AudioSource>();
+            _audio = GetComponent<AudioSource>();
             indicator = GetComponent<UnityEngine.UI.Image>();
             SalvageManager.Instance.currentRecording = -1;
         }
+        
         private void Update()
         {
-            if (SalvageManager.Instance.gameOver || SalvageManager.Instance.blackoutActive)
+            if (Input.GetKeyUp(KeyCode.Space)) Toggle();
+            
+            if (SalvageManager.Instance.isTapePlaying &&
+                (SalvageManager.Instance.gameOver || SalvageManager.Instance.blackoutActive))
             {
-                if(SalvageManager.Instance.isTapePlaying) Toggle();
+                Toggle();
                 return;
             }
-        
-            if (!player.isPlaying && SalvageManager.Instance.isTapePlaying && SalvageManager.Instance.pageInactiveTimer > 10) Toggle(); //PREVENT AFK-ING
-            if (!player.isPlaying && SalvageManager.Instance.isTapePlaying && SalvageManager.Instance.pageInactiveTimer < 10)
-            {
-                SalvageManager.Instance.currentRecording++;
-                if (SalvageManager.Instance.currentRecording == 3 && RandomExtensions.Chance(50)) //50% for 750 aggression at 4th prompt
-                {
-                    var salvagers = SalvageManager.Instance.activeAnimatronics.Where(x => x is SalvageAnimatronic).ToList();
-                    foreach (SalvageAnimatronic salvager in salvagers.Cast<SalvageAnimatronic>())
-                    {
-                        salvager.Irritate4thTape();
-                    }
-                }
-                if (SalvageManager.Instance.currentRecording >= recordings.Length)
-                {
-                    Toggle();
-                    SalvageManager.Win();
-                    return;
-                }
-                player.PlayOneShot(recordings[SalvageManager.Instance.currentRecording]);
-            }
 
-            if (Input.GetKeyUp(KeyCode.Space)) Toggle();
+            var tapeHasStopped = !_audio.isPlaying && SalvageManager.Instance.isTapePlaying;
+            if (!tapeHasStopped) return;
+            
+            if (SalvageManager.Instance.pageInactiveTimer > MaxAfkTime)
+            {
+                Toggle();
+                return;
+            }
+            
+            ProgressToNextRecording();
         }
 
+        private void ProgressToNextRecording()
+        {
+            SalvageManager.Instance.currentRecording++;
+            
+            if (MetChanceToIrritateAt4thTape)
+            {
+                foreach (SalvageAnimatronic salvager in SalvageManager.Instance.SalvageAnimatronics)
+                {
+                    salvager.Irritate4thTape();
+                }
+            }
+            
+            if (SalvageManager.Instance.currentRecording >= recordings.Length)
+            {
+                Toggle();
+                SalvageManager.Win();
+                return;
+            }
+            _audio.PlayOneShot(recordings[SalvageManager.Instance.currentRecording]);
+        }
+        
         private void Toggle()
         {
             SalvageManager.Instance.isTapePlaying ^= true;
 
-            indicator.sprite = sprites[SalvageManager.Instance.isTapePlaying ? 1 : 0];
-            AudioSource.PlayClipAtPoint(sfx[SalvageManager.Instance.isTapePlaying ? 1 : 0], Camera.main.transform.position);
+            var tapeState = !SalvageManager.Instance.isTapePlaying ? TapeState.PressToUnpause : TapeState.PressToPause;
+            var tapeSound = !SalvageManager.Instance.isTapePlaying ? Sound.TapePause : Sound.TapePlay;
             
-            if (SalvageManager.Instance.isTapePlaying) player.UnPause();
-            else player.Pause();
+            indicator.sprite = sprites[(int)tapeState];
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(tapeSound), Camera.main.transform.position);
+            
+            if (SalvageManager.Instance.isTapePlaying) _audio.UnPause();
+            else _audio.Pause();
         }
     }
 }

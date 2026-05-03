@@ -2,6 +2,8 @@
 using References;
 using UnityEngine;
 
+using static References.PreReferencer;
+
 namespace Salvage
 {
     public class SalvageAnimatronic: Animatronic, ITaseable
@@ -68,8 +70,8 @@ namespace Salvage
 
         public override void Jumpscare()
         {
-            AudioSource.PlayClipAtPoint(PreReferencer.Instance.miscClips[2], Camera.main.transform.position);
-            AudioSource.PlayClipAtPoint(PreReferencer.Instance.miscClips[0], Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(Sound.JumpscareBoom), Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(Sound.Jumpscare), Camera.main.transform.position);
             _animator.Play("JUMP");
         }
     }

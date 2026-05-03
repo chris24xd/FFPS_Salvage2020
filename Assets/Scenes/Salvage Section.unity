@@ -271,7 +271,6 @@ MonoBehaviour:
   - {fileID: 2141478133363934506, guid: a790f5695169b08428747330cfd698ce, type: 3}
   - {fileID: 2023070824765561117, guid: 2fc6ead1d4d73a644b85adbdb5c828c1, type: 3}
   - {fileID: 5115298583528988665, guid: 7618cd4e657bb8845929c53a70ef0e6a, type: 3}
-  activeAnimatronics: []
   gameOver: 0
   isPageViewed: 0
   isPageAnimating: 0
@@ -605,6 +604,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: eaf5560e3812d50469b7602088a24124, type: 3}
   - {fileID: 8300000, guid: 15d2b4463fad66941a040e489b8c500a, type: 3}
   - {fileID: 8300000, guid: cbae5a0fe6a559d4ea33cb64f48c0bd4, type: 3}
+  - {fileID: 8300000, guid: 02549e3d1a961e24dace42384a93b9e6, type: 3}
+  - {fileID: 8300000, guid: 9a02909628f566d4aa4bdea1f52abcbb, type: 3}
+  - {fileID: 8300000, guid: 7ce3431353ecf644a86ace9259417ce9, type: 3}
+  - {fileID: 8300000, guid: 4d88bf8bf6d2e8349a57884b70de70d9, type: 3}
   defaultMark: {fileID: 21300000, guid: 1a9a2980d0da11a4d8edc18c9f586b02, type: 3}
 --- !u!1 &319320770
 GameObject:
@@ -1160,9 +1163,6 @@ MonoBehaviour:
   sprites:
   - {fileID: 21300000, guid: 590db74c31b3e0f42b3dbb185c161f6a, type: 3}
   - {fileID: 21300000, guid: 9e61c441b79320043b9066b0b83b7337, type: 3}
-  sfx:
-  - {fileID: 8300000, guid: 02549e3d1a961e24dace42384a93b9e6, type: 3}
-  - {fileID: 8300000, guid: 9a02909628f566d4aa4bdea1f52abcbb, type: 3}
 --- !u!1 &591486424
 GameObject:
   m_ObjectHideFlags: 0
@@ -3269,9 +3269,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 76e1a1c97fff8ea4bbc21ca506243a13, type: 3}
   - {fileID: 8300000, guid: 503ec3eabcd8e034a8d7916f6b807800, type: 3}
   - {fileID: 8300000, guid: e9681ef74cde09540817707bebefb31a, type: 3}
-  sfx:
-  - {fileID: 8300000, guid: 4d88bf8bf6d2e8349a57884b70de70d9, type: 3}
-  - {fileID: 8300000, guid: 7ce3431353ecf644a86ace9259417ce9, type: 3}
   sprites:
   - {fileID: 21300000, guid: 36d9bb5e79809a2468cd7a11b8cf106c, type: 3}
   - {fileID: 21300000, guid: 66dda392e620ff04cbe0051bf04bd9f7, type: 3}

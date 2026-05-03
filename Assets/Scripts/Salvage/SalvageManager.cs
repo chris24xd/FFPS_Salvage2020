@@ -6,6 +6,8 @@ using References;
 using TMPro;
 using UnityEngine;
 
+using static References.PreReferencer;
+
 namespace Salvage
 {
     public class SalvageManager : MonoBehaviour
@@ -15,7 +17,7 @@ namespace Salvage
 
         [SerializeField] private SalvageAnimatronic[] salvagersToSpawn;
     
-        public Animatronic[] activeAnimatronics;
+        private Animatronic[] _activeAnimatronics;
         public bool gameOver;
         private float _timePassed;
 
@@ -63,6 +65,35 @@ namespace Salvage
         private static bool HasTapeProgressedEnough =>
             _instance.currentRecording < 5 && _instance._tapePlayingInterval >= 10;
         private static bool IsPlayerExaminingPage => _instance._pageViewingInterval >= 1;
+        
+        private IEnumerable<ITaseable> TaseableAnimatronics
+        {
+            get
+            {
+                foreach (var animatronic in _activeAnimatronics)
+                {
+                    if (animatronic is ITaseable taseable)
+                    {
+                        yield return taseable;
+                    }
+                }
+            }
+        }
+        
+        public IEnumerable<SalvageAnimatronic> SalvageAnimatronics
+        {
+            get
+            {
+                foreach (var animatronic in _activeAnimatronics)
+                {
+                    if (animatronic is SalvageAnimatronic salvager)
+                    {
+                        yield return salvager;
+                    }
+                }
+            }
+        }
+        
         private void Awake()
         {
             _instance = this;
@@ -70,7 +101,7 @@ namespace Salvage
             // SPAWN RANDOM SALVAGE ANIMATRONIC
             Instantiate(salvagersToSpawn[Random.Range(0, salvagersToSpawn.Length)]);
         
-            activeAnimatronics = FindObjectsByType<Animatronic>(FindObjectsSortMode.None);
+            _activeAnimatronics = FindObjectsByType<Animatronic>(FindObjectsSortMode.None);
 
             _timePassed = 0;
             isPageViewed = false;
@@ -94,7 +125,7 @@ namespace Salvage
         {
             if (gameOver) return;
         
-            var animsReadyToScare = activeAnimatronics.Where(x => x.CanJumpscare()).ToList();
+            var animsReadyToScare = _activeAnimatronics.Where(x => x.CanJumpscare()).ToList();
             if (animsReadyToScare.Count > 0) GameOver(animsReadyToScare[Random.Range(0, animsReadyToScare.Count)]);
 
             _timePassed += Time.deltaTime;
@@ -134,11 +165,10 @@ namespace Salvage
             }
         
             // IRRITATION
-            var salvagers = activeAnimatronics.Where(x => x is SalvageAnimatronic).ToList();
             if (HasTapeProgressedEnough && RandomExtensions.Chance(50))
             {
                 _tapePlayingInterval = 0;
-                foreach (SalvageAnimatronic salvager in salvagers.Cast<SalvageAnimatronic>())
+                foreach (SalvageAnimatronic salvager in SalvageAnimatronics)
                 {
                     salvager.IrritateTape();
                 }
@@ -147,7 +177,7 @@ namespace Salvage
             if (IsPlayerExaminingPage)
             {
                 _pageViewingInterval = 0;
-                foreach (SalvageAnimatronic salvager in salvagers.Cast<SalvageAnimatronic>())
+                foreach (SalvageAnimatronic salvager in SalvageAnimatronics)
                 {
                     salvager.IrritatePage();
                 }
@@ -158,17 +188,16 @@ namespace Salvage
             shockImage.enabled = CanTase;
             if (!CanTase || (CanTase && !(Input.GetKeyUp(KeyCode.LeftControl) || Input.GetKeyUp(KeyCode.RightControl)))) return;
             
-            var taseables = activeAnimatronics.Where(x => x is ITaseable).ToList();
-            if (taseables.Count == 0) return;
+            if (!TaseableAnimatronics.Any()) return;
 
             _tases++;
             _taseCooldown = 0;
             blackoutActive = true;
-            AudioSource.PlayClipAtPoint(PreReferencer.Instance.miscClips[1], Camera.main.transform.position);
-            StartCoroutine(TasingPhase(taseables));
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(Sound.Shock), Camera.main.transform.position);
+            StartCoroutine(TasingPhase());
         }
 
-        private IEnumerator TasingPhase(List<Animatronic> animatronicsToTase)
+        private IEnumerator TasingPhase()
         {
             while (((Color32)blackoutImage.color).a < 255)
             {
@@ -176,7 +205,7 @@ namespace Salvage
                 yield return null;
             }
         
-            foreach (ITaseable taseable in animatronicsToTase.Cast<ITaseable>())
+            foreach (ITaseable taseable in TaseableAnimatronics)
             {
                 taseable.Tase();
             

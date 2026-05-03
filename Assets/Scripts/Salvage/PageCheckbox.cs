@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+using static References.PreReferencer;
+
 namespace Salvage
 {
     public class PageCheckbox : MonoBehaviour, IPointerClickHandler
@@ -20,7 +22,7 @@ namespace Salvage
         {
             _checkImage.raycastTarget = false;
             _animator.Play("X");
-            AudioSource.PlayClipAtPoint(PreReferencer.Instance.miscClips[3], Camera.main.transform.position);
+            AudioSource.PlayClipAtPoint(PreReferencer.Instance.GetSound(Sound.Mark), Camera.main.transform.position);
         }
 
         public void OnDisable()
