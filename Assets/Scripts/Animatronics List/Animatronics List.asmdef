@@ -1,0 +1,17 @@
+{
+    "name": "AnimatronicsList",
+    "rootNamespace": "",
+    "references": [
+        "GUID:420fe9b72ceba8a4d9116cf22e3b95ca",
+        "GUID:ecf410f4395ef0747932898cfafb6aa5"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

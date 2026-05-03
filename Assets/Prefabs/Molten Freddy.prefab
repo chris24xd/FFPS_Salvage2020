@@ -1,0 +1,104 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &9067981680099449637
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1695759326499093857, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d942cda514695c440abcba28938d8e8b, type: 2}
+    - target: {fileID: 2959114766433589097, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c54cae26e64468448b861728093bd522, type: 3}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4324145682782279792, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5909055944538349613, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_Name
+      value: Molten Freddy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975308528062662423, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: b8a3185bef0fd734db3c65e718480bf3, type: 3}
+    - target: {fileID: 6975308528062662423, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b8a3185bef0fd734db3c65e718480bf3, type: 3}
+    m_RemovedComponents:
+    - {fileID: 5252337038291374732, guid: 4600e43b349739544936b6f27f264889, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5909055944538349613, guid: 4600e43b349739544936b6f27f264889, type: 3}
+      insertIndex: 1
+      addedObject: {fileID: 163247967883094482}
+  m_SourcePrefab: {fileID: 100100000, guid: 4600e43b349739544936b6f27f264889, type: 3}
+--- !u!1 &3447187042055600904 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5909055944538349613, guid: 4600e43b349739544936b6f27f264889, type: 3}
+  m_PrefabInstance: {fileID: 9067981680099449637}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &163247967883094482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3447187042055600904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 813459560147cfa49a6dd2dda813db2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 76b390fd2bc86434fbf79cefe5ad85ea, type: 2}
+  points: 500
+  audibleWarningVolumes:
+  - 0
+  - 0.03
+  - 0.05
+  _aggression: 0
+  _stage: 0
