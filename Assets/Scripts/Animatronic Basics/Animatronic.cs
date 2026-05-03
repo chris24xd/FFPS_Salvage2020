@@ -4,7 +4,7 @@ namespace Animatronic_Basics
 {
     public class Animatronic : MonoBehaviour
     {
-        public Animatronic_AI data;
+        public AnimatronicAI data;
 
         protected int AI => data.ai;
         public int points;
